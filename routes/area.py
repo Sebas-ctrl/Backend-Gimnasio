@@ -19,12 +19,12 @@ def get_db():
         db.close()
 
 
-@area.get('/areas/', response_model=List[schemas.areas.Area],tags=['Areas'],dependencies=[Depends(Portador())])
+@area.get('/areas/', response_model=List[schemas.areas.Area],tags=['Areas'])
 def read_areas(skip: int=0, limit: int=10, db: Session=Depends(get_db)):
     db_areas = crud.areas.get_areas(db=db,skip=skip, limit=limit)
     return db_areas
 
-@area.post("/area/{id}", response_model=schemas.areas.Area, tags=["Areas"],dependencies=[Depends(Portador())])
+@area.post("/area/{id}", response_model=schemas.areas.Area, tags=["Areas"])
 def read_area(id: int, db: Session = Depends(get_db)):
     db_area= crud.areas.get_area(db=db, id=id)
     if db_area is None:
@@ -32,7 +32,7 @@ def read_area(id: int, db: Session = Depends(get_db)):
     return db_area
 
 
-@area.post('/areas/', response_model=schemas.areas.Area,tags=['Areas'],dependencies=[Depends(Portador())])
+@area.post('/areas/', response_model=schemas.areas.Area,tags=['Areas'])
 def create_area(area: schemas.areas.AreaCreate, db: Session=Depends(get_db)):
     db_areas = crud.areas.get_area_by_nombre(db,nombre=area.Nombre)
     if db_areas:
@@ -40,7 +40,7 @@ def create_area(area: schemas.areas.AreaCreate, db: Session=Depends(get_db)):
     return crud.areas.create_area(db=db, area=area)
 
 
-@area.put('/areas/{id}', response_model=schemas.areas.Area,tags=['Areas'],dependencies=[Depends(Portador())])
+@area.put('/areas/{id}', response_model=schemas.areas.Area,tags=['Areas'])
 def update_area(id:int,area: schemas.areas.AreaUpdate, db: Session=Depends(get_db)):
     db_areas = crud.areas.update_area(db=db, id=id, area=area)
     if db_areas is None:
@@ -48,7 +48,7 @@ def update_area(id:int,area: schemas.areas.AreaUpdate, db: Session=Depends(get_d
     return db_areas
 
 
-@area.delete('/areas/{id}', response_model=schemas.areas.Area,tags=['Areas'],dependencies=[Depends(Portador())])
+@area.delete('/areas/{id}', response_model=schemas.areas.Area,tags=['Areas'])
 def delete_area(id:int, db: Session=Depends(get_db)):
     db_areas = crud.areas.delete_area(db=db, id=id)
     if db_areas is None:

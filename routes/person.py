@@ -19,7 +19,7 @@ def get_db():
         db.close()
 
 # Ruta para obtener todos los Personas
-@person.get('/persons/', response_model=List[schemas.persons.Person],tags=['Personas'],dependencies=[Depends(Portador())])
+@person.get('/persons/', response_model=List[schemas.persons.Person],tags=['Personas'])
 def read_persons(skip: int=0, limit: int=10, db: Session=Depends(get_db)):
     db_persons = crud.persons.get_persons(db=db,skip=skip, limit=limit)
     return db_persons

@@ -35,7 +35,7 @@ def read_pregunta(id: int, db: Session = Depends(get_db)):
     return db_pregunta
 
 # Ruta para crear una pregunta
-@pregunta_router.post('/preguntas/', response_model=schemas.Pregunta.Pregunta, tags=['Preguntas'],dependencies=[Depends(Portador())])
+@pregunta_router.post('/preguntas/', response_model=schemas.Pregunta.Pregunta, tags=['Preguntas'])
 def create_pregunta(pregunta: schemas.Pregunta.PreguntaCreate, db: Session = Depends(get_db)):
     db_pregunta = crud.Pregunta.get_pregunta_by_pregunta(db, pregunta=pregunta.pregunta)
     if db_pregunta:

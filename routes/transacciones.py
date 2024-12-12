@@ -21,30 +21,30 @@ def get_db():
     finally:
         db.close()
 
-@transacciones.get("/transacciones/", response_model=List[schemas.transacciones.Transaccion], tags=["Transacciones"],dependencies=[Depends(Portador())] )
+@transacciones.get("/transacciones/", response_model=List[schemas.transacciones.Transaccion], tags=["Transacciones"] )
 def read_transacciones(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     db_users= crud.transacciones.get_transacciones(db=db, skip=skip, limit=limit)
     return db_users
 
-@transacciones.post("/transaccion/{id}", response_model=schemas.transacciones.Transaccion, tags=["Transacciones"],dependencies=[Depends(Portador())])
+@transacciones.post("/transaccion/{id}", response_model=schemas.transacciones.Transaccion, tags=["Transacciones"])
 def read_transaccion(id: int, db: Session = Depends(get_db)):
     db_user= crud.transacciones.get_transaccion(db=db, id=id)
     if db_user is None:
         raise HTTPException(status_code=404, detail="Transaccion not found")
     return db_user
 
-@transacciones.post("/transaccion/", response_model=schemas.transacciones.Transaccion, tags=["Transacciones"],dependencies=[Depends(Portador())])
+@transacciones.post("/transaccion/", response_model=schemas.transacciones.Transaccion, tags=["Transacciones"])
 def create_transaccion(transaccion: schemas.transacciones.TransaccionCreate, db: Session = Depends(get_db)):
     return crud.transacciones.create_transacciones(db=db, nom=transaccion)
 
-@transacciones.put("/transaccion/{id}", response_model=schemas.transacciones.Transaccion, tags=["Transacciones"],dependencies=[Depends(Portador())])
+@transacciones.put("/transaccion/{id}", response_model=schemas.transacciones.Transaccion, tags=["Transacciones"])
 def update_transaccion(id: int, persona: schemas.transacciones.TransaccionUpdate, db: Session = Depends(get_db)):
     db_user = crud.transacciones.update_transacciones(db=db, id=id, person=persona)
     if db_user is None:
         raise HTTPException(status_code=404, detail="Transaccion no existe, no actualizado")
     return db_user
 
-@transacciones.delete("/transaccion/{id}", response_model=schemas.transacciones.Transaccion, tags=["Transacciones"],dependencies=[Depends(Portador())])
+@transacciones.delete("/transaccion/{id}", response_model=schemas.transacciones.Transaccion, tags=["Transacciones"])
 def delete_transaccion(id: int, db: Session = Depends(get_db)):
     db_user = crud.transacciones.delete_transacciones(db=db, id=id)
     if db_user is None:

@@ -19,33 +19,33 @@ def get_db():
     finally:
         db.close()
 
-@instructor.get("/instructors/", response_model=List[schemas.Instructor], tags=["Instructors"],dependencies=[Depends(Portador())])
+@instructor.get("/instructors/", response_model=List[schemas.Instructor], tags=["Instructors"])
 def read_instructors(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     db_instructors = crud.get_instructors(db=db, skip=skip, limit=limit)
     return db_instructors
 
-@instructor.post("/instructors/", response_model=schemas.Instructor, tags=["Instructors"],dependencies=[Depends(Portador())])
+@instructor.post("/instructors/", response_model=schemas.Instructor, tags=["Instructors"])
 def create_instructor(instructor: schemas.InstructorCreate, db: Session = Depends(get_db)):
     db_instructor = crud.get_instructor_by_name(db, name=instructor.name)
     if db_instructor:
         raise HTTPException(status_code=400, detail="Instructor already exists")
     return crud.create_instructor(db=db, instructor=instructor)
 
-@instructor.get("/instructors/{id}", response_model=schemas.Instructor, tags=["Instructors"],dependencies=[Depends(Portador())])
+@instructor.get("/instructors/{id}", response_model=schemas.Instructor, tags=["Instructors"])
 def read_instructor(id: int, db: Session = Depends(get_db)):
     db_instructor = crud.get_instructor(db=db, id=id)
     if db_instructor is None:
         raise HTTPException(status_code=404, detail="Instructor not found")
     return db_instructor
 
-@instructor.put("/instructors/{id}", response_model=schemas.Instructor, tags=["Instructors"],dependencies=[Depends(Portador())])
+@instructor.put("/instructors/{id}", response_model=schemas.Instructor, tags=["Instructors"])
 def update_instructor(id: int, instructor: schemas.InstructorUpdate, db: Session = Depends(get_db)):
     db_instructor = crud.update_instructor(db=db, id=id, instructor=instructor)
     if db_instructor is None:
         raise HTTPException(status_code=404, detail="Instructor not found, not updated")
     return db_instructor
 
-@instructor.delete("/instructors/{id}", response_model=schemas.Instructor, tags=["Instructors"],dependencies=[Depends(Portador())])
+@instructor.delete("/instructors/{id}", response_model=schemas.Instructor, tags=["Instructors"])
 def delete_instructor(id: int, db: Session = Depends(get_db)):
     db_instructor = crud.delete_instructor(db=db, id=id)
     if db_instructor is None:

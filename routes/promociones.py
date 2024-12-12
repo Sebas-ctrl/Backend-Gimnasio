@@ -26,7 +26,7 @@ def read_promocion(id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Promocion not found")
     return db_promocion
 
-@promocion_router.post('/promociones/', response_model=schemas.promociones.Promocion, tags=['Promociones'],dependencies=[Depends(Portador())])
+@promocion_router.post('/promociones/', response_model=schemas.promociones.Promocion, tags=['Promociones'])
 def create_promocion(promocion: schemas.promociones.PromocionCreate, db: Session = Depends(get_db)):
     return crud.promociones.create_promocion(db=db, promocion=promocion)
 

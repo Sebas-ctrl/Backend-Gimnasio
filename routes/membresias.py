@@ -21,7 +21,7 @@ def get_db():
     finally:
         db.close()
 
-@membresia.get("/membresias/", response_model=List[schemas.membresias.Membresia], tags=["Membresias"],dependencies=[Depends(Portador())] )
+@membresia.get("/membresias/", response_model=List[schemas.membresias.Membresia], tags=["Membresias"] )
 def read_membresias(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     db_users = crud.membresias.get_membresias(db=db, skip=skip, limit=limit)
     return db_users
@@ -31,25 +31,25 @@ def read_membresias_by_type(db: Session = Depends(get_db)):
     db_membresias = crud.membresias.get_membresias_count_by_type(db=db)
     return db_membresias
 
-@membresia.post("/membresia/{id}", response_model=schemas.membresias.Membresia, tags=["Membresias"],dependencies=[Depends(Portador())])
+@membresia.post("/membresia/{id}", response_model=schemas.membresias.Membresia, tags=["Membresias"])
 def read_membresia(id: int, db: Session = Depends(get_db)):
     db_user= crud.membresias.get_membresia(db=db, id=id)
     if db_user is None:
         raise HTTPException(status_code=404, detail="Membresia not found")
     return db_user
 
-@membresia.post("/membresia/", response_model=schemas.membresias.Membresia, tags=["Membresias"],dependencies=[Depends(Portador())])
+@membresia.post("/membresia/", response_model=schemas.membresias.Membresia, tags=["Membresias"])
 def create_membresia(membresia: schemas.membresias.MembresiaCreate, db: Session = Depends(get_db)):
     return crud.membresias.create_membresias(db=db, nom=membresia)
 
-@membresia.put("/membresia/{id}", response_model=schemas.membresias.Membresia, tags=["Membresias"],dependencies=[Depends(Portador())])
+@membresia.put("/membresia/{id}", response_model=schemas.membresias.Membresia, tags=["Membresias"])
 def update_membresia(id: int, persona: schemas.membresias.MembresiaUpdate, db: Session = Depends(get_db)):
     db_user = crud.membresias.update_membresias(db=db, id=id, person=persona)
     if db_user is None:
         raise HTTPException(status_code=404, detail="Membresia no existe, no actualizado")
     return db_user
 
-@membresia.delete("/membresia/{id}", response_model=schemas.membresias.Membresia, tags=["Membresias"],dependencies=[Depends(Portador())])
+@membresia.delete("/membresia/{id}", response_model=schemas.membresias.Membresia, tags=["Membresias"])
 def delete_membresia(id: int, db: Session = Depends(get_db)):
     db_user = crud.membresias.delete_membresias(db=db, id=id)
     if db_user is None:

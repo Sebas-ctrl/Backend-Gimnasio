@@ -16,20 +16,20 @@ def get_db():
         db.close()
 
 
-@empleado.get("/empleados/", response_model=List[schemas.empleados.Empleado], tags=["Empleados"] ,dependencies=[Depends(Portador())])
+@empleado.get("/empleados/", response_model=List[schemas.empleados.Empleado], tags=["Empleados"] )
 def read_empleados(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     db_empleados= crud.empleados.get_empleados(db=db, skip=skip, limit=limit)
     return db_empleados
 
 
-@empleado.post("/empleado/{ID}", response_model=schemas.empleados.Empleado, tags=["Empleados"] ,dependencies=[Depends(Portador())])
+@empleado.post("/empleado/{ID}", response_model=schemas.empleados.Empleado, tags=["Empleados"] )
 def read_empleado(ID: int, db: Session = Depends(get_db)):
     db_empleados= crud.empleados.get_empleado(db=db, ID=ID)
     if db_empleados is None:
         raise HTTPException(status_code=404, detail="Empleado not found")
     return db_empleados
 
-@empleado.post("/empleados/", response_model=schemas.empleados.Empleado, tags=["Empleados"],dependencies=[Depends(Portador())])
+@empleado.post("/empleados/", response_model=schemas.empleados.Empleado, tags=["Empleados"])
 def create_empleado(empleado: schemas.empleados.EmpleadoCreate, db: Session = Depends(get_db)):
     db_empleados = crud.empleados.get_empleado_by_Numero(db, Numero_Empleado=empleado.Numero_Empleado)
     if db_empleados:
@@ -37,14 +37,14 @@ def create_empleado(empleado: schemas.empleados.EmpleadoCreate, db: Session = De
     return crud.empleados.create_empleado(db=db, empleado=empleado)
  
 
-@empleado.put("/empleado/{ID}", response_model=schemas.empleados.Empleado, tags=["Empleados"] ,dependencies=[Depends(Portador())])
+@empleado.put("/empleado/{ID}", response_model=schemas.empleados.Empleado, tags=["Empleados"] )
 def update_empleado(ID: int, empleado: schemas.empleados.EmpleadoUpdate, db: Session = Depends(get_db)):
     db_empleados = crud.empleados.update_empleado(db = db, ID = ID, empleado = empleado)
     if db_empleados is None:
         raise HTTPException(status_code=404, detail="Empleado no existente, no esta actuaizado")
     return db_empleados
 
-@empleado.delete("/empleado/{ID}", response_model=schemas.empleados.Empleado, tags=["Empleados"] ,dependencies=[Depends(Portador())])
+@empleado.delete("/empleado/{ID}", response_model=schemas.empleados.Empleado, tags=["Empleados"] )
 def delete_empleado(ID: int, db: Session = Depends(get_db)):
     db_empleados = crud.empleados.delete_empleado(db = db, ID = ID)
     if db_empleados is None:

@@ -17,30 +17,30 @@ def get_db():
     finally:
         db.close()
 
-@progra_salud.get("/programas_saludables/", response_model=List[schemas.progra_salud.Programa], tags=["Programas Saludables"],dependencies=[Depends(Portador())])
+@progra_salud.get("/programas_saludables/", response_model=List[schemas.progra_salud.Programa], tags=["Programas Saludables"])
 def read_programas(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     db_programas = crud.progra_salud.get_programas(db=db, skip=skip, limit=limit)
     return db_programas
 
-@progra_salud.get("/programa/{id}", response_model=schemas.progra_salud.Programa, tags=["Programas Saludables"],dependencies=[Depends(Portador())])
+@progra_salud.get("/programa/{id}", response_model=schemas.progra_salud.Programa, tags=["Programas Saludables"])
 def read_programa(id: int, db: Session = Depends(get_db)):
     db_programa = crud.progra_salud.get_programa(db=db, id=id)
     if db_programa is None:
         raise HTTPException(status_code=404, detail="Programa no encontrado")
     return db_programa
 
-@progra_salud.post("/programas_saludables/", response_model=schemas.progra_salud.Programa, tags=["Programas Saludables"],dependencies=[Depends(Portador())])
+@progra_salud.post("/programas_saludables/", response_model=schemas.progra_salud.Programa, tags=["Programas Saludables"])
 def create_programa(programa: schemas.progra_salud.ProgramaCreate, db: Session = Depends(get_db)):
     return crud.progra_salud.create_programa(db=db, programa=programa)
 
-@progra_salud.put("/programa/{id}", response_model=schemas.progra_salud.Programa, tags=["Programas Saludables"],dependencies=[Depends(Portador())])
+@progra_salud.put("/programa/{id}", response_model=schemas.progra_salud.Programa, tags=["Programas Saludables"])
 def update_programa(id: int, programa: schemas.progra_salud.ProgramaUpdate, db: Session = Depends(get_db)):
     db_programa = crud.progra_salud.update_programa(db=db, id=id, programa=programa)
     if db_programa is None:
         raise HTTPException(status_code=404, detail="Programa no encontrado")
     return db_programa
 
-@progra_salud.delete("/programa/{id}", response_model=schemas.progra_salud.Programa, tags=["Programas Saludables"],dependencies=[Depends(Portador())])
+@progra_salud.delete("/programa/{id}", response_model=schemas.progra_salud.Programa, tags=["Programas Saludables"])
 def delete_programa(id: int, db: Session = Depends(get_db)):
     db_programa = crud.progra_salud.delete_programa(db=db, id=id)
     if db_programa is None:

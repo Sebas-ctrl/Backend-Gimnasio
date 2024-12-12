@@ -19,12 +19,12 @@ def get_db():
         db.close()
 
 
-@schedule.get('/schedules/', response_model=List[schemas.schedules.Schedule],tags=['Horarios'],dependencies=[Depends(Portador())])
+@schedule.get('/schedules/', response_model=List[schemas.schedules.Schedule],tags=['Horarios'])
 def read_schedules(skip: int=0, limit: int=10, db: Session=Depends(get_db)):
     db_schedules = crud.schedules.get_schedules(db=db,skip=skip, limit=limit)
     return db_schedules
 
-@schedule.post("/schedule/{id}", response_model=schemas.schedules.Schedule, tags=["Horarios"],dependencies=[Depends(Portador())])
+@schedule.post("/schedule/{id}", response_model=schemas.schedules.Schedule, tags=["Horarios"])
 def read_schedule(id: int, db: Session = Depends(get_db)):
     db_schedule= crud.schedules.get_schedule(db=db, id=id)
     if db_schedule is None:
@@ -32,7 +32,7 @@ def read_schedule(id: int, db: Session = Depends(get_db)):
     return db_schedule
 
 
-@schedule.post('/schedules/', response_model=schemas.schedules.Schedule,tags=['Horarios'],dependencies=[Depends(Portador())])
+@schedule.post('/schedules/', response_model=schemas.schedules.Schedule,tags=['Horarios'])
 def create_schedule(schedule: schemas.schedules.ScheduleCreate, db: Session=Depends(get_db)):
     db_schedules = crud.schedules.get_schedule_by_usuario(db,usuario=schedule.Usuario)
     if db_schedules:
@@ -40,7 +40,7 @@ def create_schedule(schedule: schemas.schedules.ScheduleCreate, db: Session=Depe
     return crud.schedules.create_schedule(db=db, schedule=schedule)
 
 
-@schedule.put('/schedules/{id}', response_model=schemas.schedules.Schedule,tags=['Horarios'],dependencies=[Depends(Portador())])
+@schedule.put('/schedules/{id}', response_model=schemas.schedules.Schedule,tags=['Horarios'])
 def update_schedule(id:int,schedule: schemas.schedules.ScheduleUpdate, db: Session=Depends(get_db)):
     db_schedules = crud.schedules.update_schedule(db=db, id=id, schedule=schedule)
     if db_schedules is None:
@@ -48,7 +48,7 @@ def update_schedule(id:int,schedule: schemas.schedules.ScheduleUpdate, db: Sessi
     return db_schedules
 
 
-@schedule.delete('/schedules/{id}', response_model=schemas.schedules.Schedule,tags=['Horarios'],dependencies=[Depends(Portador())])
+@schedule.delete('/schedules/{id}', response_model=schemas.schedules.Schedule,tags=['Horarios'])
 def delete_schedule(id:int, db: Session=Depends(get_db)):
     db_schedules = crud.schedules.delete_schedule(db=db, id=id)
     if db_schedules is None:
